@@ -52,6 +52,14 @@ class FormInventario extends LitElement {
     if (campos.some((valor) => String(valor).trim() === "")) {
       return "Todos los campos son obligatorios.";
     }
+    const cantidad = Number(this.cantidad);
+    const precio = Number(this.precio);
+    if (Number.isNaN(cantidad) || cantidad < 0) {
+      return "La cantidad debe ser un número mayor o igual a 0.";
+    }
+    if (Number.isNaN(precio) || precio < 0) {
+      return "El precio debe ser un número mayor o igual a 0.";
+    }
     return "";
   }
 
