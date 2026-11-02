@@ -7,6 +7,25 @@ class TablaInventario extends LitElement {
     };
   }
 
+  static get styles() {
+    return css`
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 16px;
+      }
+      th,
+      td {
+        border: 1px solid #ccc;
+        padding: 8px;
+        text-align: left;
+      }
+      th {
+        background: #f0f0f0;
+      }
+    `;
+  }
+  
   constructor() {
     super();
     this.list = [];
