@@ -34,6 +34,11 @@ class FormInventario extends LitElement {
     this.limpiar();
   }
 
+  limpiar() {
+    this.codigo = this.nombre = this.categoria = "";
+    this.cantidad = this.precio = "";
+  }
+
   // Devuelve una función que guarda lo escrito en la propiedad indicada
   handler(campo) {
     return (event) => {
@@ -41,14 +46,22 @@ class FormInventario extends LitElement {
     };
   }
 
-  limpiar() {
-    this.codigo = this.nombre = this.categoria = "";
-    this.cantidad = this.precio = "";
+  // Devuelve un mensaje de error o "" si todo está bien
+  validar() {
+    const campos = [this.codigo, this.nombre, this.categoria, this.cantidad, this.precio];
+    if (campos.some((valor) => String(valor).trim() === "")) {
+      return "Todos los campos son obligatorios.";
+    }
+    return "";
   }
 
   registrar(event) {
     event.preventDefault();
-    // En el siguiente commit: validación y evento producto-registrado
+    const mensaje = this.validar();
+    if (mensaje) {
+      console.warn(mensaje);
+      return;
+    }
   }
 
   render() {
