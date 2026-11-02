@@ -1,8 +1,27 @@
+# Taller de integración · Grupo 2 · Inventario
 
+## 1. Datos
 
+| Dato | Valor |
+|---|---|
+| **Nuestro equipo** | Grupo 2 · Inventario |
+| **Nuestro repositorio** | https://github.com/DaniAleG/app-lit (rama `taller-integracion`) |
+| **Equipo externo** | Equipo 3 · Gestión de pedidos |
+| **Repositorio externo** | https://github.com/DiegoPintoSEGO/app-lit-grupo3 |
+| **Archivo externo** | `src/views/home/register.js` |
+| **Commit usado** | [`84bab34`](https://github.com/DiegoPintoSEGO/app-lit-grupo3/blob/84bab34/src/views/home/register.js) |
+| **Copiado sin cambios en** | `src/externos/equipo-3/register.js` |
+| **Página de prueba** | `integracion.html` → http://localhost:5173/integracion.html |
 
+**Tipo de integración:** formulario del otro equipo (`<wc-form-register>`) + tabla propia (`<wc-tabla-inventario>`).
 
+## 2. Componentes y roles
 
+| Componente | Archivo | Origen | Rol en la integración |
+|---|---|---|---|
+| `<wc-integracion>` | `src/views/integracion/integracion.js` | Grupo 2 (nuestro) | **Padre**: escucha el evento, adapta los datos y guarda la lista |
+| `<wc-form-register>` | `src/externos/equipo-3/register.js` | Equipo 3 (externo) | **Hijo que emite**: dispara `pedidoRegister` con el pedido en `detail` |
+| `<wc-tabla-inventario>` | `src/views/inventario/tabla-inventario.js` | Grupo 2 (nuestro) | **Hijo que recibe**: muestra la propiedad `.list`; emite `producto-eliminado` al borrar |
 
 ## 5. Evaluación del componente externo
 
