@@ -70,8 +70,27 @@ class FormInventario extends LitElement {
 
   registrar(event) {
     event.preventDefault();
+
     this.error = this.validar();
     if (this.error) return;
+
+    const producto = {
+      codigo: this.codigo.trim(),
+      nombre: this.nombre.trim(),
+      categoria: this.categoria.trim(),
+      cantidad: Number(this.cantidad),
+      precio: Number(this.precio),
+    };
+
+    this.dispatchEvent(
+      new CustomEvent("producto-registrado", {
+        detail: producto,
+        bubbles: true,
+        composed: true,
+      })
+    );
+
+    this.limpiar();
   }
 
   render() {
