@@ -74,6 +74,31 @@ agregar(event) {
 }
 ```
 
+## 4. Dificultades
+
+### Dificultad 1 · Los dos componentes no usan el mismo formato
+- **Síntoma:** al pasar `event.detail` directo a la tabla, las columnas *Código*, *Nombre* y *Categoría* salían vacías.
+- **Causa:** el formulario del Equipo 3 envía `{ cliente, producto, cantidad, precio, fecha, estado }` y nuestra tabla espera `{ codigo, nombre, categoria, cantidad, precio }`. No coinciden los nombres de los campos y el pedido no trae código.
+- **Solución:** escribimos el adaptador `agregar(event)` en el padre `<wc-integracion>`: genera el código `PED-001`, usa `producto` como `nombre` y `cliente` como `categoria`. El componente externo no se tocó. *(Rol 2)*
+
+### Dificultad 2 · La tabla no existía en la rama del taller
+- **Síntoma:** Vite mostraba el error `Failed to resolve import "../inventario/tabla-inventario.js"` y la página `integracion.html` quedaba en blanco.
+- **Causa:** `integracion.js` importaba `<wc-tabla-inventario>`, pero ese archivo todavía estaba solo en la rama `feature/tabla` y no en `taller-integracion`.
+- **Solución:** se abrió el PR #3 de `feature/tabla` hacia `taller-integracion`. El Rol 4 lo revisó, lo probó, lo aprobó y lo fusionó, y con eso el import funcionó. *(Roles 1, 3 y 4)*
+
+### Dificultad 3 · El botón Eliminar no hacía nada y los códigos se repetían
+- **Síntoma:** al pulsar *Eliminar*, la fila no se borraba. Después de borrar una, el siguiente pedido salía con un código repetido (por ejemplo, dos `PED-002`).
+- **Causa:** el padre no escuchaba `producto-eliminado`, y el código se calculaba con `this.lista.length + 1`, que baja cuando se elimina una fila.
+- **Solución:** se agregó `@producto-eliminado=${this.eliminar}` en el padre y un contador `this.contador` que solo aumenta (commit `b219a3c`). *(Rol 3)*
+
+### Dificultad 4 · Datos vacíos o de texto
+- **Síntoma:** si en *Cliente* o *Producto* se escribían solo espacios, el formulario externo igual enviaba el pedido, con `cliente: ""` y `producto: ""`.
+- **Causa:** `<wc-form-register>` valida solo con `required` del HTML, que acepta espacios, y no valida en JavaScript antes del `dispatchEvent`.
+- **Solución:** como no podemos modificar el componente externo, el adaptador pone valores por defecto ("Sin producto", "cliente sin nombre", `0` si un número llega como texto) con el método `aNumero()`. Además se reportó en el issue al Equipo 3. *(Roles 2 y 3)*
+
+### Prevención · Choque de etiquetas
+Para evitar que `customElements.define` lance error por nombres repetidos, nuestros componentes usan nombres propios (`wc-form-inventario`, `wc-tabla-inventario`), e `integracion.html` importa solo el `register.js` del Equipo 3, nunca su `home.js` ni su `index.js`.
+
 ## 5. Evaluación del componente externo
 
 **Componente evaluado:** `<wc-form-register>` (formulario de Gestión de pedidos) · Equipo 3
