@@ -39,10 +39,19 @@ class TablaInventario extends LitElement {
     this.list = [];
   }
 
+  eliminar(codigo) {
+    this.dispatchEvent(
+      new CustomEvent("producto-eliminado", {
+        detail: { codigo },
+        bubbles: true,
+        composed: true,
+      })
+    );
+  }
+
   render() {
     const productos = this.list ?? [];
 
-    // NUEVO: mensaje cuando no hay productos
     if (productos.length === 0) {
       return html`
         <h2>Listado de productos</h2>
@@ -61,6 +70,7 @@ class TablaInventario extends LitElement {
             <th>Cantidad</th>
             <th>Precio</th>
             <th>Estado</th>
+            <th>Acción</th>
           </tr>
         </thead>
         <tbody>
@@ -76,6 +86,11 @@ class TablaInventario extends LitElement {
                   ${producto.cantidad < 5
                     ? html`<span class="stock-bajo">Stock bajo</span>`
                     : "Disponible"}
+                </td>
+                <td>
+                  <button type="button" @click=${() => this.eliminar(producto.codigo)}>
+                    Eliminar
+                  </button>
                 </td>
               </tr>
             `
