@@ -8,6 +8,7 @@ class FormInventario extends LitElement {
       categoria: { type: String },
       cantidad: { type: String },
       precio: { type: String },
+      error: { type: String },
     };
   }
 
@@ -26,6 +27,9 @@ class FormInventario extends LitElement {
         width: 100%;
         box-sizing: border-box;
       }
+      .error {
+        color: #b00020;
+      }
     `;
   }
 
@@ -37,6 +41,7 @@ class FormInventario extends LitElement {
   limpiar() {
     this.codigo = this.nombre = this.categoria = "";
     this.cantidad = this.precio = "";
+    this.error = "";
   }
 
   // Devuelve una función que guarda lo escrito en la propiedad indicada
@@ -65,11 +70,8 @@ class FormInventario extends LitElement {
 
   registrar(event) {
     event.preventDefault();
-    const mensaje = this.validar();
-    if (mensaje) {
-      console.warn(mensaje);
-      return;
-    }
+    this.error = this.validar();
+    if (this.error) return;
   }
 
   render() {
@@ -102,6 +104,8 @@ class FormInventario extends LitElement {
             <label for="precio">Precio:</label>
             <input id="precio" type="number" min="0" step="0.01" .value=${this.precio ?? ""} @input=${this.handler("precio")} />
           </div>
+
+          ${this.error ? html`<p class="error">${this.error}</p>` : ""}
 
           <button type="submit">Registrar</button>
         </fieldset>
