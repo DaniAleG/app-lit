@@ -133,3 +133,13 @@ Para evitar que `customElements.define` lance error por nombres repetidos, nuest
 | — | Rol 3 · Revisión externa | No reportó uso de IA | — |
 
 **Regla que seguimos:** la IA no tocó el componente externo `src/externos/equipo-3/register.js`. Ese archivo es idéntico al commit `84bab34` del Equipo 3.
+
+
+## 7. Aportes del equipo
+
+| Integrante | Usuario GitHub | Rol | Qué hizo en el taller | Commits |
+|---|---|---|---|---|
+| Daniel Alejandro Guevara Bedón | [@DaniAleG](https://github.com/DaniAleG) | Rol 1 · Integración | Creó la rama `taller-integracion`, fijó el commit `84bab34` del Equipo 3, copió `register.js` sin cambios, escribió el padre `<wc-integracion>` y abrió el pull request | [ver commits](https://github.com/DaniAleG/app-lit/commits/main?author=DaniAleG) |
+| Anahí Mirley Ñacato Oña | [@AnahiMirley](https://github.com/AnahiMirley) | Rol 2 · Adaptador y pruebas | Formulario `<wc-form-inventario>`, adaptador del `detail` de pedidos al formato de inventario, página `integracion.html`, valores por defecto para datos vacíos o de texto, pruebas y captura | [ver commits](https://github.com/DaniAleG/app-lit/commits/main?author=AnahiMirley) |
+| Melanie Barrionuevo | [@MelanieBarrionuevo](https://github.com/MelanieBarrionuevo) | Rol 3 · Revisión externa | Tabla `<wc-tabla-inventario>` (lista vacía, stock bajo, eliminar), evaluación del componente externo (sección 5), [issue #1](https://github.com/DiegoPintoSEGO/app-lit-grupo3/issues/1) en el repo del Equipo 3 y corrección del evento `producto-eliminado` | [ver commits](https://github.com/DaniAleG/app-lit/commits/main?author=MelanieBarrionuevo) |
+| Michael Eduardo Tonato León | [@leoncitogrrr](https://github.com/leoncitogrrr) | Rol 4 · Documentación | Escribió `integracion.md` (secciones 1, 2, 3, 4, 6 y 7) con el diagrama Mermaid; revisó, probó, aprobó y fusionó el [PR #3](https://github.com/DaniAleG/app-lit/pull/3) y el pull request final del taller | [ver commits](https://github.com/DaniAleG/app-lit/commits/main?author=leoncitogrrr) |
