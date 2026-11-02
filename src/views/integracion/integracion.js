@@ -48,12 +48,21 @@ class Integracion extends LitElement {
   }
 
   /**
-   * Recibe el pedido del formulario del Equipo 3 y lo agrega a la lista.
-   * Siempre se asigna un arreglo NUEVO para que Lit vuelva a renderizar la tabla.
-   * Rol 2: aquí va el adaptador que convierte el detail al formato de nuestra tabla.
+   * Adaptador (Rol 2): convierte el pedido del Equipo 3 al formato de nuestra tabla.
+   * { cliente, producto, cantidad, precio, fecha, estado }
+   *   → { codigo, nombre, categoria, cantidad, precio }
+   * Se hace aquí en el padre, nunca dentro del componente externo.
    */
   agregar(event) {
-    this.lista = [...this.lista, event.detail];
+    const pedido = event.detail;
+    const fila = {
+      codigo: `PED-${this.lista.length + 1}`,
+      nombre: pedido.producto,
+      categoria: `Pedido de ${pedido.cliente}`,
+      cantidad: Number(pedido.cantidad),
+      precio: Number(pedido.precio),
+    };
+    this.lista = [...this.lista, fila];
   }
 
   render() {
