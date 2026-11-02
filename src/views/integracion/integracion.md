@@ -23,6 +23,57 @@
 | `<wc-form-register>` | `src/externos/equipo-3/register.js` | Equipo 3 (externo) | **Hijo que emite**: dispara `pedidoRegister` con el pedido en `detail` |
 | `<wc-tabla-inventario>` | `src/views/inventario/tabla-inventario.js` | Grupo 2 (nuestro) | **Hijo que recibe**: muestra la propiedad `.list`; emite `producto-eliminado` al borrar |
 
+## 3. Flujo de comunicación
+
+Los datos **bajan** del padre a los hijos por **propiedades** y los avisos **suben** de los hijos al padre por **eventos**.
+
+```mermaid
+flowchart TD
+    F["wc-form-register<br/>Equipo 3 · hijo que emite"]
+    P["wc-integracion · padre (Grupo 2)<br/>agregar(event) = adaptador<br/>this.lista = [...this.lista, fila]"]
+    T["wc-tabla-inventario<br/>Grupo 2 · hijo que recibe"]
+
+    F -- "evento pedidoRegister (sube con detail)" --> P
+    P -- "propiedad .list (baja)" --> T
+    T -. "evento producto-eliminado (sube)" .-> P
+```
+
+**Paso a paso:**
+
+1. El usuario llena el formulario del Equipo 3 y pulsa *Registrar pedido*.
+2. `<wc-form-register>` emite `pedidoRegister` con `bubbles: true, composed: true`, así el evento sale de su Shadow DOM.
+3. `<wc-integracion>` lo escucha con `@pedidoRegister=${this.agregar}` y lee `event.detail`.
+4. El método `agregar(event)` **adapta** el pedido al formato de nuestra tabla y crea un **arreglo nuevo** con `this.lista = [...this.lista, fila]` (no se usa `push`, porque Lit solo re-renderiza si cambia la referencia).
+5. La lista **baja** a la tabla con `.list=${this.lista}` y aparece la fila nueva.
+6. Si se pulsa *Eliminar*, la tabla emite `producto-eliminado` con `{ codigo }` y el padre filtra la lista.
+
+### El adaptador
+
+Los dos componentes no usan el mismo formato, así que el padre convierte los datos. **El componente externo no se modifica.**
+
+| Detail del Equipo 3 (`pedidoRegister`) | → | Fila de nuestra tabla (`.list`) |
+|---|:---:|---|
+| *(no existe)* | → | `codigo`: generado `PED-001`, `PED-002`… con un contador |
+| `producto` | → | `nombre` (si llega vacío: "Sin producto") |
+| `cliente` | → | `categoria`: "Pedido de *cliente*" |
+| `cantidad` | → | `cantidad` (con `Number()`; si es texto → `0`) |
+| `precio` | → | `precio` (con `Number()`; si es texto → `0`) |
+| `fecha`, `estado` | → | no se usan (la tabla no tiene esas columnas) |
+
+```js
+agregar(event) {
+  const pedido = event.detail ?? {};
+  const fila = {
+    codigo: `PED-${String(++this.contador).padStart(3, "0")}`,
+    nombre: pedido.producto || "Sin producto",
+    categoria: `Pedido de ${pedido.cliente || "cliente sin nombre"}`,
+    cantidad: this.aNumero(pedido.cantidad),
+    precio: this.aNumero(pedido.precio),
+  };
+  this.lista = [...this.lista, fila];
+}
+```
+
 ## 5. Evaluación del componente externo
 
 **Componente evaluado:** `<wc-form-register>` (formulario de Gestión de pedidos) · Equipo 3
