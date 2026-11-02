@@ -45,6 +45,7 @@ class Integracion extends LitElement {
     super();
     // Se inicializa vacía: la tabla recorre la lista y fallaría con undefined.
     this.lista = [];
+    this.contador = 0;
   }
 
   /** Convierte a número; si llega texto o vacío, usa 0 para no romper la tabla. */
@@ -62,7 +63,7 @@ class Integracion extends LitElement {
   agregar(event) {
     const pedido = event.detail ?? {};
     const fila = {
-      codigo: `PED-${String(this.lista.length + 1).padStart(3, "0")}`,
+      codigo: `PED-${String(++this.contador).padStart(3, "0")}`,
       nombre: pedido.producto || "Sin producto",
       categoria: `Pedido de ${pedido.cliente || "cliente sin nombre"}`,
       cantidad: this.aNumero(pedido.cantidad),
@@ -71,14 +72,25 @@ class Integracion extends LitElement {
     this.lista = [...this.lista, fila];
   }
 
+  // Quita el producto cuando la tabla emite producto-eliminado
+  eliminar(event) {
+    this.lista = this.lista.filter((p) => p.codigo !== event.detail.codigo);
+  }
+
   render() {
     return html`
       <h1>Integración · Pedidos (Equipo 3) → Inventario (Grupo 2)</h1>
-      <p>Cada pedido registrado en el formulario del Equipo 3 aparece en nuestra tabla de inventario.</p>
+      <p>
+        Cada pedido registrado en el formulario del Equipo 3 aparece en nuestra
+        tabla de inventario.
+      </p>
 
       <wc-form-register @pedidoRegister=${this.agregar}></wc-form-register>
 
-      <wc-tabla-inventario .list=${this.lista}></wc-tabla-inventario>
+      <wc-tabla-inventario
+        .list=${this.lista}
+        @producto-eliminado=${this.eliminar}
+      ></wc-tabla-inventario>
     `;
   }
 }
