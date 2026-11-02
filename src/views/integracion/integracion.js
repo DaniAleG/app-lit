@@ -47,6 +47,12 @@ class Integracion extends LitElement {
     this.lista = [];
   }
 
+  /** Convierte a número; si llega texto o vacío, usa 0 para no romper la tabla. */
+  aNumero(valor) {
+    const numero = Number(valor);
+    return Number.isNaN(numero) ? 0 : numero;
+  }
+
   /**
    * Adaptador (Rol 2): convierte el pedido del Equipo 3 al formato de nuestra tabla.
    * { cliente, producto, cantidad, precio, fecha, estado }
@@ -54,13 +60,13 @@ class Integracion extends LitElement {
    * Se hace aquí en el padre, nunca dentro del componente externo.
    */
   agregar(event) {
-    const pedido = event.detail;
+    const pedido = event.detail ?? {};
     const fila = {
-      codigo: `PED-${this.lista.length + 1}`,
-      nombre: pedido.producto,
-      categoria: `Pedido de ${pedido.cliente}`,
-      cantidad: Number(pedido.cantidad),
-      precio: Number(pedido.precio),
+      codigo: `PED-${String(this.lista.length + 1).padStart(3, "0")}`,
+      nombre: pedido.producto || "Sin producto",
+      categoria: `Pedido de ${pedido.cliente || "cliente sin nombre"}`,
+      cantidad: this.aNumero(pedido.cantidad),
+      precio: this.aNumero(pedido.precio),
     };
     this.lista = [...this.lista, fila];
   }
