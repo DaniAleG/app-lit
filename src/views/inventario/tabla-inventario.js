@@ -23,15 +23,33 @@ class TablaInventario extends LitElement {
       th {
         background: #f0f0f0;
       }
+      .vacio {
+        color: #666;
+        font-style: italic;
+      }
+      .stock-bajo {
+        color: #b00020;
+        font-weight: bold;
+      }
     `;
   }
-  
+
   constructor() {
     super();
     this.list = [];
   }
 
   render() {
+    const productos = this.list ?? [];
+
+    // NUEVO: mensaje cuando no hay productos
+    if (productos.length === 0) {
+      return html`
+        <h2>Listado de productos</h2>
+        <p class="vacio">No hay productos registrados</p>
+      `;
+    }
+
     return html`
       <h2>Listado de productos</h2>
       <table>
@@ -42,10 +60,11 @@ class TablaInventario extends LitElement {
             <th>Categoría</th>
             <th>Cantidad</th>
             <th>Precio</th>
+            <th>Estado</th>
           </tr>
         </thead>
         <tbody>
-          ${(this.list ?? []).map(
+          ${productos.map(
             (producto) => html`
               <tr>
                 <td>${producto.codigo}</td>
@@ -53,12 +72,17 @@ class TablaInventario extends LitElement {
                 <td>${producto.categoria}</td>
                 <td>${producto.cantidad}</td>
                 <td>$${Number(producto.precio).toFixed(2)}</td>
+                <td>
+                  ${producto.cantidad < 5
+                    ? html`<span class="stock-bajo">Stock bajo</span>`
+                    : "Disponible"}
+                </td>
               </tr>
             `
           )}
         </tbody>
       </table>
-      `;
+    `;
   }
 }
 
