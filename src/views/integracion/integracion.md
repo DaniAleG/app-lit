@@ -122,3 +122,14 @@ Para evitar que `customElements.define` lance error por nombres repetidos, nuest
 2. Campos vacíos → el navegador bloquea el envío. ✅
 3. Solo espacios en *Cliente* y *Producto* → se envía el pedido vacío; en la consola llega `cliente: ''` y `producto: ''`, y en la tabla aparece "Sin producto". ❌ (reportado en el issue #1)
 4. Cantidad `0` o negativa → el navegador bloquea el envío. ✅
+
+## 6. Uso de IA
+
+| Herramienta | Quién la usó | Para qué | Qué cambiamos o revisamos nosotros |
+|---|---|---|---|
+| Claude (Anthropic) | Rol 4 · Documentación | Ordenar la estructura de `integracion.md`, armar el diagrama Mermaid y redactar las dificultades a partir del historial de commits del repo | Comprobamos que el diagrama se vea en GitHub, verificamos cada dificultad con los commits reales (`b219a3c`, PR #3), probamos `integracion.html` en el navegador y ajustamos los textos a lo que hizo cada integrante |
+| — | Rol 1 · Integración | No reportó uso de IA | — |
+| — | Rol 2 · Adaptador y pruebas | No reportó uso de IA | — |
+| — | Rol 3 · Revisión externa | No reportó uso de IA | — |
+
+**Regla que seguimos:** la IA no tocó el componente externo `src/externos/equipo-3/register.js`. Ese archivo es idéntico al commit `84bab34` del Equipo 3.
